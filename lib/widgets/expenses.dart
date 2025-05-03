@@ -30,8 +30,16 @@ class _ExpensesState extends State<Expenses> {
     //this method returns nothing so return type is void
     showModalBottomSheet(
       context: context,
-      builder: (ctx) => NewExpense(),
+      builder: (ctx) => NewExpense(
+        onAddExpense: _addExpense,
+      ),
     );
+  }
+
+  void _addExpense(Expense expense) {
+    setState(() {
+      _registeredExpenses.add(expense);
+    }); //ensure UI is updated
   }
 
   @override
