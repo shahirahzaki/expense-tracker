@@ -29,6 +29,7 @@ class _ExpensesState extends State<Expenses> {
   void _openExpenseOverlay() {
     //this method returns nothing so return type is void
     showModalBottomSheet(
+      isScrollControlled: true,
       context: context,
       builder: (ctx) => NewExpense(
         onAddExpense: _addExpense,
