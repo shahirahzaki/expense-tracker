@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:expense_tracker/models/expense.dart';
 
@@ -44,6 +42,38 @@ class _NewExpenseState extends State<NewExpense> {
     setState(() {
       _selectedDate = pickedDate;
     });
+  }
+
+  void _submitForm() {
+    final enteredAmount = double.tryParse(_amountController
+        .text); //takes string as an input, returns double if its able to convert that string to a double, returns null otherwise
+    //tryParse('Hello') => null, tryParse ('1.12') => 1.12
+    final amountIsInvalid = enteredAmount == null || enteredAmount <= 0;
+    if (_titleController.text.trim().isEmpty ||
+        amountIsInvalid ||
+        _selectedDate == null) {
+      //show error message
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text('Invalid input'),
+          content: Text(
+              'Please ensure a valid title, amount, date and category was entered.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+              child: Text(
+                'Okay',
+              ),
+            ),
+          ],
+        ),
+      );
+      return; //this ensures that no function after this return statement is returned will be executed.
+      //so if user enters this if statement and reaches this return; , any functions after this if statement wont be executed.
+    }
   }
 
   @override
@@ -134,10 +164,7 @@ class _NewExpenseState extends State<NewExpense> {
                 child: Text('Cancel'),
               ),
               ElevatedButton(
-                onPressed: () {
-                  log(_titleController.text);
-                  log(_amountController.text);
-                },
+                onPressed: _submitForm,
                 child: Text('Save Expense'),
               ),
             ],
