@@ -5,9 +5,27 @@ var kColourScheme = ColorScheme.fromSeed(
   seedColor: Color.fromARGB(255, 96, 59, 181),
 );
 
+var kDarkColourScheme = ColorScheme.fromSeed(
+  brightness: Brightness.dark,
+  seedColor: Color.fromARGB(255, 5, 99, 125),
+);
+
 void main() {
   runApp(
     MaterialApp(
+      darkTheme: ThemeData.dark().copyWith(
+        colorScheme: kDarkColourScheme,
+        cardTheme: CardTheme().copyWith(
+          color: kDarkColourScheme.secondaryContainer,
+          margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: kDarkColourScheme.primaryContainer,
+            foregroundColor: kDarkColourScheme.onPrimaryContainer,
+          ),
+        ),
+      ),
       theme: ThemeData().copyWith(
         // scaffoldBackgroundColor: const Color.fromARGB(255, 254, 236, 255),
         //Instead of setting up an entire Theme from scratch, it's often better to copy an existing Theme
@@ -37,6 +55,7 @@ void main() {
               ),
             ),
       ),
+      themeMode: ThemeMode.system,
       home: Expenses(),
     ),
   );
