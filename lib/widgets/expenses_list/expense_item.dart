@@ -22,6 +22,10 @@ class ExpenseItem extends StatelessWidget {
           children: [
             Text(
               expense.title,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleLarge!
+                  .copyWith(fontSize: 16),
             ),
             SizedBox(
               height: 4,
