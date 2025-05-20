@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:expense_tracker/models/expense.dart';
 
@@ -55,6 +58,43 @@ class _NewExpenseState extends State<NewExpense> {
         amountIsInvalid ||
         _selectedDate == null) {
       //show error message
+      _showDialog();
+      return; //this ensures that no function after this return statement is returned will be executed.
+      //so if user enters this if statement and reaches this return; , any functions after this if statement wont be executed.
+    }
+
+    widget.onAddExpense(
+      Expense(
+        title: _titleController.text,
+        amount: enteredAmount,
+        date: _selectedDate!,
+        category: _selectedCategory,
+      ),
+    );
+    Navigator.pop(context);
+  }
+
+  void _showDialog() {
+    if (Platform.isIOS) {
+      showCupertinoDialog(
+        context: context,
+        builder: (ctx) => CupertinoAlertDialog(
+          title: Text('Invalid input'),
+          content: Text(
+              'Please ensure a valid title, amount, date and category was entered.'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(ctx);
+              },
+              child: Text(
+                'Okay',
+              ),
+            ),
+          ],
+        ),
+      );
+    } else {
       showDialog(
         context: context,
         builder: (ctx) => AlertDialog(
@@ -73,19 +113,7 @@ class _NewExpenseState extends State<NewExpense> {
           ],
         ),
       );
-      return; //this ensures that no function after this return statement is returned will be executed.
-      //so if user enters this if statement and reaches this return; , any functions after this if statement wont be executed.
     }
-
-    widget.onAddExpense(
-      Expense(
-        title: _titleController.text,
-        amount: enteredAmount,
-        date: _selectedDate!,
-        category: _selectedCategory,
-      ),
-    );
-    Navigator.pop(context);
   }
 
   @override
